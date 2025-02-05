@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random Video Chat</title>
+    <title>Video Chat</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <video id="localVideo" autoplay playsinline></video>
-    <video id="remoteVideo" autoplay playsinline></video>
-    <button onclick="nextCall()">Next</button>
-
+    <h1>Omegle Video Chat</h1>
+    <video id="localVideo" autoplay muted></video>
+    <video id="remoteVideo" autoplay></video>
     <script src="/socket.io/socket.io.js"></script>
     <script src="app.js"></script>
 </body>
