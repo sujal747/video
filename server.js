@@ -1,23 +1,25 @@
 const express = require("express");
 const http = require("http");
-const { Server } = require("socket.io");
+const socketIo = require("socket.io");
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+const io = socketIo(server);
 
-app.use(express.static("public")); // Serves frontend files
+app.use(express.static("public"));
 
-let waitingUser = null; // Stores a waiting user
+let waitingUser = null;
 
 io.on("connection", (socket) => {
     console.log("User connected:", socket.id);
 
     if (waitingUser) {
+        // Pair users if one is waiting
         io.to(waitingUser).emit("match", socket.id);
         io.to(socket.id).emit("match", waitingUser);
         waitingUser = null;
     } else {
+        // Store waiting user
         waitingUser = socket.id;
     }
 
@@ -26,7 +28,10 @@ io.on("connection", (socket) => {
     });
 
     socket.on("disconnect", () => {
-        if (waitingUser === socket.id) waitingUser = null;
+        console.log("User disconnected:", socket.id);
+        if (waitingUser === socket.id) {
+            waitingUser = null;
+        }
     });
 });
 
